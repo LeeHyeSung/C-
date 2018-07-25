@@ -31,5 +31,10 @@ int main(void) {
 	b.Show();
 	c.Show();
 	d->Show();
+	
+	delete &b;
+	delete d;
+	// delete를 별도로 해주면 소멸자가 호출된다.
+	// 동적할당이라 프로그램이 종료되어도 별도로 해제를 안해주면 소멸자가 안불렸던 것 같다.
 	return 0;
 }
