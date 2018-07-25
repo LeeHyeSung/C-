@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+class Point {
+	int x, y;
+public:
+	Point(int x, int y) : x(x), y(y) {
+		cout << "Point(x, y) " << x << ", " << y << endl;
+	}
+	explicit Point(const Point &p) : x(p.x), y(p.y) {
+		cout << "Point(const Point &p) " << x << ", " << y << endl;
+	}
+	~Point() {
+		cout << "~Point() " << x << ", " << y << endl;
+	}
+	void SetX(int x) { this->x = x; }
+	void Show(void) {
+		cout << "[" << x << ", " << y << "]" << endl;
+	}
+};
+
+int main(void) {
+	Point a(1, 2);
+	Point &b = *(new Point(3, 4));
+	Point c(a);
+	Point *d = new Point(6, 7);
+
+	c.SetX(5);
+
+	a.Show();
+	b.Show();
+	c.Show();
+	d->Show();
+	return 0;
+}
+
