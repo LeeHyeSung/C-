@@ -1,0 +1,38 @@
+//
+// 상속 Inheritance
+//
+/*
+상속을 받는 class (derived class)는 상속을 하는 class (base class)의 모든 멤버를 상속 받는다.
+다만, 상속 받은 멤버가 base class 안에서 어떤 접근 제한 영역 안에 있었는지에 따라 직접 접근 가능 여부가 달라진다.
+*/
+
+// Ex
+class base {
+private:
+	int n1;
+protected:
+	int n2;
+public:
+	int n3;
+};
+
+class derived : public base {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class derived" << endl;
+		//cout << n1 << endl;	// impossible to access
+		cout << n2 << endl;
+		cout << n3 << endl << endl;
+	}
+};
+
+int main(void) {
+	derived A;
+	A.WhatYouHave();
+
+	cout << "Here is in main()" << endl;
+	//cout << A.n1 << endl;		// impossible to access
+	//cout << A.n2 << endl;		// impossible to access
+	cout << A.n3 << endl << endl;
+	return 0;
+}
