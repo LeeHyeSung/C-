@@ -1,0 +1,94 @@
+//
+// 3가지 형태의 상속
+/*
+class derived_A : private 	  base {};
+class derived_B : protected 	base {};
+class derived_C : public 	    base {};
+
+*의미 :
+base class의 멤버중 상속에 사용한 접근 지시자 보다 낮은 접근 영역에 있는 멤버는 derived class 내에서 상속에 사용한 접근 지시자의 영역에 있게 된다.
+
+*용도 :
+열 손가락 깨물어 아픈 손가락 없다가 아닌 경우
+어떤 손가락은 유난히 아프고, 어떤 손가락은 하나도 안아픈 
+*/
+
+// Ex1
+class base {
+private:	int n1;
+protected:	int n2;
+public:		int n3;
+	base() : n1(1), n2(2), n3(3) {}
+};
+
+class derived_A : private base {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class derived_A" << endl;
+		//cout << n1 << endl;	// impossible to access
+		cout << n2 << endl;
+		cout << n3 << endl << endl;
+	}
+};
+class derived_B : protected base {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class derived_B" << endl;
+		//cout << n1 << endl;	// impossible to access
+		cout << n2 << endl;
+		cout << n3 << endl << endl;
+	}
+};
+class derived_C : public base {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class derived_C" << endl;
+		//cout << n1 << endl;	// impossible to access
+		cout << n2 << endl;
+		cout << n3 << endl << endl;
+	}
+};
+int main(void) {
+	derived_A A;  // n1 : x, n2 : private,    n3 : private
+	derived_B B;  // n1 : x, n2 : protected,  n3 : protected
+	derived_C C;  // n1 : x, n2 : protected,  n3 : public
+
+	//cout << A.n2 << A.n3 << endl;
+	//cout << B.n2 << B.n3 << endl;
+	cout << C.n3 << endl;
+	return 0;
+}
+
+//Ex2
+class base {
+private:	int n1;
+protected:	int n2;
+public:		int n3;
+	base() : n1(1), n2(2), n3(3) {}
+};
+
+class mid : private base {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class mid" << endl;
+		//cout << n1 << endl;	// impossible to access
+		cout << n2 << endl;
+		cout << n3 << endl << endl;
+	}
+};
+class derived : public mid {
+public:
+	void WhatYouHave(void) {
+		cout << "Here is in class derived" << endl;
+		//cout << n1 << endl;	// impossible to access
+		//cout << n2 << endl; // impossible to access
+		//cout << n3 << endl << endl; // impossible to access
+	}
+};
+
+int main(void) {
+  mid c;      // n1 : x, n2 : private,  n3 : private
+	derived a;  // n1 : x, n2 : x,        n3 : x
+	a.WhatYouHave();
+	return 0;
+}
