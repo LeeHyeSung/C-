@@ -1,0 +1,34 @@
+//
+// 가상함수와 순수 가상함수
+// 순수 가상함수가 선언된 클래스는 추상 클래스라 부르며 객체를 생성할 수 없다.
+
+class First {
+public:
+	virtual void Func() = 0;              // 순수 가상함수  -> 이 클래스는 추상클래스이고 따라서 객체를 생성할 수 없다.
+};
+class Second : public First {
+public:
+	virtual void Func() {
+		cout << " Second" << endl;
+	}
+};
+class Third : public Second {
+public:
+	//virtual void Func() {               // 순수 가상함수, 가상함수 둘 모두 꼭 재정의를 해야하는 것은 아니다.
+	//	cout << " Third" << endl;         // 재정의를 하지 않을 경우 위로 올라가며 재정의가 된 함수를 찾아 실행한다.
+	//}                                   // 추상 클래스 도달까지 재정의 함수가 없을 경우 컴파일 에러가 발생한다.
+};
+
+
+int main(void) {
+	Third *tp	= new Third();
+	Second *sp	= tp;
+	First *fp	= sp;
+
+	//First *tmp = new First();
+
+	fp->Func();
+	sp->Func();
+	tp->Func();
+	return 0;
+}
