@@ -21,14 +21,14 @@ public:
 
 
 int main(void) {
-	Third *tp	= new Third();
-	Second *sp	= tp;
+	Third *tp	= new Third();		
+	Second *sp	= tp;			
 	First *fp	= sp;
 
 	//First *tmp = new First();
 
-	fp->Func();
-	sp->Func();
+	fp->Func();	// class Third 의 객체이므로 일단 Third에 가서 Func() 찾고 없으면 위로 올라간다.
+	sp->Func();	// 만약 class Second 의 객체였다면 바로 Second에 가서 Func()를 찾고 없으면  올라간다.
 	tp->Func();
 	return 0;
 }
