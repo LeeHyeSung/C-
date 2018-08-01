@@ -1,0 +1,70 @@
+//
+// 가상 상속한 class의 모든 멤버 (변수, 함수) 는 하나씩만 생성됨
+// 같은 class로 부터 가상 상속 받은 두 class에게 다중 상속 받을 경우 객체 생성시 무조건 가상 상속한 class 관련해서는 기본 생성자만 1회 호출된다.
+//
+
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+	int a;
+	char b;
+	Base() : a(666), b('B'){ cout << "Base Constructor" << endl; }
+	Base(int n) : a(n), b('A') { cout << "Base Constructor for int" << endl; }
+	Base(char n) : a(777), b(n) { cout << "Base constructor for char" << endl; }
+	void Func(void) { 
+		cout << "Base Func " << a << ", " << b << endl; 
+	}
+};
+class Mid_A : virtual public Base {
+public:
+	Mid_A() : Base() { cout << "Mid_A Constructor" << endl; }
+	Mid_A(int n) : Base(n) { 
+		cout << "Mid_A Constructor for int" << endl; 
+		b = 'Z';
+	}
+	void Func_Mid_A(void) { 
+		Func();
+		cout << "Mid_A Func" << endl;
+		cout << a << ", " << b << endl;
+	}
+};
+class Mid_B : virtual public Base {
+public:
+	Mid_B() : Base() { cout << "Mid_B Constructor" << endl; }
+	Mid_B(char n) : Base(n) {
+		cout << "Mid_B Constructor for char" << endl; 
+	}
+	void Func_Mid_B(void) { 
+		Func();
+		cout << "Mid_B Func" << endl;
+		cout << a << ", " << b << endl;
+	}
+};
+class Derived : public Mid_A, public Mid_B {
+public:
+	Derived(int a, char b) : Mid_A(a), Mid_B(b) { cout << "Derived Constructor for a, b" << endl; }
+	void Derived_Func(void) {
+		Func_Mid_A();
+		Func_Mid_B();
+		Func();
+		cout << "------------" << endl;
+		cout << Mid_A::a << ", " << Mid_A::b << endl;
+		cout << Mid_B::a << ", " << Mid_B::b << endl;
+		cout << a << ", " << b << endl;
+	}
+};
+
+int main(void) {
+	cout << "------------" << endl;
+	Derived a(999, 'S');
+	cout << "------------" << endl;
+	a.Derived_Func();
+
+	cout << endl << endl;
+
+	Mid_A b(3);
+	b.Func_Mid_A();
+	return 0;
+}
