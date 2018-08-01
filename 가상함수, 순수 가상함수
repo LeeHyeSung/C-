@@ -32,3 +32,52 @@ int main(void) {
 	tp->Func();
 	return 0;
 }
+
+//
+// 가상함수 사용시 base class 포인터가 derived class 의 overwrite한 함수를 참조할 수 있는 이유
+// 가상함수를 포함하는 class의 경우 compiler가 가상 함수 테이블을 만든다.
+// 이는 함수의 원형을 Key로 하고 함수의 주소값을 Value로 하는 Table이며 V-table (Virtual Table)이라 부른다.
+//
+// 컴파일시 각 class 별로 Derived class부터 시작해서 Base class로 올라가며 함수 원형을 Key값으로 V-table을 만든다.
+// 자연스럽게 동일한 Key값을 (함수 원형) 가지는 데이터는 입력에서 제외된다. (Overwriting 당한 부모 class의 함수)
+// new로 객체 생성시 객체를 위해 할당된 메모리에 객체의 자료형에 맞는 V-table 포인터를 붙혀서 준다.
+// 부모 class의 포인터로 참조한 객체의 V-table 주소를 참조하면 참조하는 객체별 자료형에 맞는 V-table을 참조할 수 있다.
+//
+
+class Base {
+public:
+	int a;
+	char b;
+	Base() : a(0xaa), b(0xb){ }
+	virtual void Func(void) { 
+		cout << "[Base]Func" << endl; 
+	}
+	virtual void base_func(void) {
+		cout << "[Base]base_func" << endl;
+	}
+};
+class Derived : public Base {
+public:
+	Derived() {}
+	virtual void Func(void) {
+		Base::Func();
+		cout << "[Derived]Func" << endl;
+	}
+	void derived_func(void) {
+		cout << "[Derived]derived_func" << endl;
+	}
+};
+
+int main(void) {
+	Base *p1 = new Base;
+	Base *t1 = new Base;
+	Base *p2 = new Derived;
+	Base *t2 = new Derived;
+	Derived *t3 = new Derived;
+
+	p1->Func();
+	p2->Func();
+	return 0;
+}
+
+// 실제 virtual 함수를 포함하는 class의 객체 생성 후 메모리 확인시 멤버 변수 값 앞에 자료형별 V-table 포인터를 확인할 수 있었다.
